@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Irasu sarasas{% endblock %}
+{% block content %}
+<h2>Visi irasai</h2>
+
+{% if visi_irasai.items %}
+{% for irasas in visi_irasai.items %}
+    <div class="border-bottom py-2">
+        {% if irasas.pajamos %}
+        <strong>Pajamos:</strong> {{ irasas.suma }}
+        {% else %}
+        <strong>Islaidos:</strong> {{ irasas.suma }}
+        {% endif %}
+        <br>
+        <small class="text-muted">
+            {{ datetime.strftime(irasas.data, "%Y-%m-%d %H:%M:%S") }}
+        </small>
+        <br>
+    </div>
+{% endfor %}
+<div class="mt-3">
+    {% for page_num in visi_irasai.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if visi_irasai.page == page_num %}
+            <a class="btn btn-info btn-sm" href="{{ url_for('main.records', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+            <a class="btn btn-outline btn-sm" href="{{ url_for('main.records', page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+        ...
+        {% endif %}
+    {% endfor %}
+</div>
+{% else %}
+<p>Irasu dar nera</p>
+{% endif %}
+<a class="btn btn-success mt-4" href="{{ url_for('main.new_record') }}">Naujas irasas</a>
+{% endblock %}
